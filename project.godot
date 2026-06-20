@@ -11,10 +11,9 @@ config_version=5
 [application]
 
 config/name="Pins"
+run/main_scene="uid://cx1y203w4v5u"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
-run/main_scene="res://main.tscn"
-
 
 [autoload]
 
