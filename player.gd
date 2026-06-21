@@ -172,3 +172,7 @@ func _physics_process(delta: float) -> void:
 	elif global_position.z < -6000.0:
 		global_position.z = -6000.0
 		velocity.z = 0.0
+
+func apply_knockback(force: Vector3) -> void:
+	velocity += force
+
