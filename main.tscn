@@ -28,6 +28,7 @@ _data = {
 point_count = 2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tube"]
+shading_mode = 0
 albedo_color = Color(0.15, 0.15, 0.2, 1)
 albedo_texture = ExtResource("2_icon")
 uv1_triplanar = true
@@ -39,8 +40,8 @@ albedo_color = Color(0, 1, 1, 1)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_beam"]
 material = SubResource("StandardMaterial3D_beam")
-top_radius = 5.0
-bottom_radius = 5.0
+top_radius = 50.0
+bottom_radius = 50.0
 height = 6000.0
 radial_segments = 16
 

@@ -50,11 +50,25 @@ func _physics_process(delta: float) -> void:
 		velocity += gravity_vec * delta
 
 	# 5. Handle Jump (inward)
-	if Input.is_action_just_pressed("ui_accept") and on_floor_custom:
+	# Supports both Space key and ui_accept
+	var jump_pressed: bool = Input.is_key_pressed(KEY_SPACE) or Input.is_action_just_pressed("ui_accept")
+	if jump_pressed and on_floor_custom:
 		velocity += local_up * jump_velocity
 
-	# 6. Handle Movement
-	var input_dir: Vector2 = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	# 6. Handle Movement (WASD and Arrow keys directly)
+	var input_dir: Vector2 = Vector2.ZERO
+	if Input.is_key_pressed(KEY_A) or Input.is_key_pressed(KEY_LEFT):
+		input_dir.x -= 1.0
+	if Input.is_key_pressed(KEY_D) or Input.is_key_pressed(KEY_RIGHT):
+		input_dir.x += 1.0
+	if Input.is_key_pressed(KEY_W) or Input.is_key_pressed(KEY_UP):
+		input_dir.y -= 1.0
+	if Input.is_key_pressed(KEY_S) or Input.is_key_pressed(KEY_DOWN):
+		input_dir.y += 1.0
+		
+	# Normalize to prevent diagonal speed boosts
+	input_dir = input_dir.normalized()
+	
 	var move_dir: Vector3 = target_right * input_dir.x + target_forward * -input_dir.y
 	
 	var radial_vel: Vector3 = velocity.project(local_up)
