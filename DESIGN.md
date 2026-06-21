@@ -91,3 +91,9 @@ graph TD
 2. **Phase 2:** Spawn a physical ball (packet) rolling down the tube axis. Implement passive bounce reactions on the player and obstacles.
 3. **Phase 3:** Implement the player's crouch-to-flip action to redirect the ball.
 4. **Phase 4:** Build a basic chamber transition and sorting triggers.
+
+---
+
+## 8. Structural & Scale Constraints (Benchmarks)
+- **Deep Space Inner Core (2000m Boundary):** The area between the central Sky Beam (100m radius) and a 2000m radial boundary is designated as a "Deep Space Core" / "No-Build Zone." Inhabitants cannot construct platforms or tables in this zone. It remains clear for raw environmental data flow, high-speed warp tubes (approx. 250m radius with custom lighting), and visual depth.
+

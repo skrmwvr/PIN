@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cx1y203w4v5u"]
+[gd_scene load_steps=12 format=3 uid="uid://cx1y203w4v5u"]
 
 [ext_resource type="PackedScene" uid="uid://dx1a2b3c4d5e" path="res://player.tscn" id="1_player"]
 [ext_resource type="Texture2D" path="res://icon.svg" id="2_icon"]
@@ -22,17 +22,10 @@ glow_bloom = 0.3
 
 [sub_resource type="Curve3D" id="Curve3D_1"]
 _data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, -3000, 0, 0, 0, 0, 0, 0, 0, 0, 3000),
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, -6000, 0, 0, 0, 0, 0, 0, 0, 0, 6000),
 "tilts": PackedFloat32Array(0, 0)
 }
 point_count = 2
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tube"]
-shading_mode = 0
-albedo_color = Color(0.15, 0.15, 0.2, 1)
-albedo_texture = ExtResource("2_icon")
-uv1_triplanar = true
-uv1_scale = Vector3(0.05, 0.05, 0.05)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_beam"]
 shading_mode = 0
@@ -40,10 +33,43 @@ albedo_color = Color(0, 1, 1, 1)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_beam"]
 material = SubResource("StandardMaterial3D_beam")
-top_radius = 50.0
-bottom_radius = 50.0
-height = 6000.0
+top_radius = 100.0
+bottom_radius = 100.0
+height = 12000.0
 radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tube"]
+shading_mode = 0
+cull_mode = 1
+albedo_color = Color(0.15, 0.15, 0.2, 1)
+albedo_texture = ExtResource("2_icon")
+uv1_triplanar = true
+uv1_scale = Vector3(0.05, 0.05, 0.05)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_tube"]
+material = SubResource("StandardMaterial3D_tube")
+top_radius = 5998.0
+bottom_radius = 5998.0
+height = 12000.0
+radial_segments = 128
+cap_top = false
+cap_bottom = false
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_cap"]
+material = SubResource("StandardMaterial3D_tube")
+top_radius = 5998.0
+bottom_radius = 5998.0
+height = 10.0
+radial_segments = 128
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ring"]
+shading_mode = 0
+albedo_color = Color(1, 0.5, 0, 1)
+
+[sub_resource type="TorusMesh" id="TorusMesh_ring"]
+material = SubResource("StandardMaterial3D_ring")
+inner_radius = 4.0
+outer_radius = 5.0
 
 [node name="Main" type="Node3D"]
 
@@ -61,37 +87,29 @@ curve = SubResource("Curve3D_1")
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
 mesh = SubResource("CylinderMesh_beam")
 
-[node name="Tube" type="CSGCombiner3D" parent="."]
-use_collision = false
-
-[node name="OuterCylinder" type="CSGCylinder3D" parent="Tube"]
+[node name="TubeMesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
-material_override = SubResource("StandardMaterial3D_tube")
-radius = 1000.0
-height = 6000.0
-sides = 64
+mesh = SubResource("CylinderMesh_tube")
 
-[node name="InnerCylinder" type="CSGCylinder3D" parent="Tube"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
-operation = 2
-material_override = SubResource("StandardMaterial3D_tube")
-radius = 998.0
-height = 6002.0
-sides = 64
+[node name="CapLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -6000)
+mesh = SubResource("CylinderMesh_cap")
 
-[node name="CapLeft" type="CSGCylinder3D" parent="Tube"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -3000)
-material_override = SubResource("StandardMaterial3D_tube")
-radius = 1000.0
-height = 10.0
-sides = 64
+[node name="CapRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 6000)
+mesh = SubResource("CylinderMesh_cap")
 
-[node name="CapRight" type="CSGCylinder3D" parent="Tube"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 3000)
-material_override = SubResource("StandardMaterial3D_tube")
-radius = 1000.0
-height = 10.0
-sides = 64
+[node name="Ring1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5995, 100)
+mesh = SubResource("TorusMesh_ring")
+
+[node name="Ring2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5995, 150)
+mesh = SubResource("TorusMesh_ring")
+
+[node name="Ring3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5995, 200)
+mesh = SubResource("TorusMesh_ring")
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -997.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5994.0, 0)
